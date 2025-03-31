@@ -7,7 +7,7 @@ export default function HeroSection() {
 <div
   className="absolute inset-0"
   style={{
-    backgroundImage: `url('/bg-image.jpg'), url('/bg-image1.jpg')`, // Two background images layered
+    backgroundImage: `url('/bg-image.png'), url('/bg-image1.png')`, // Two background images layered
     backgroundSize: 'cover, cover', // Ensures both images cover the section
     backgroundPosition: 'center, center', // Centers both images
     backgroundRepeat: 'no-repeat, no-repeat', // Prevents image tiling
