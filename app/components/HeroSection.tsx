@@ -2,7 +2,7 @@ import React from "react";
 
 export default function HeroSection() {
   return (
-    <section className="relative w-full h-screen flex items-center justify-center bg-white mt-[65px]">
+    <section className="relative w-full h-screen flex items-center justify-center bg-white ">
       {/* Background Image */}
 <div
   className="absolute inset-0"

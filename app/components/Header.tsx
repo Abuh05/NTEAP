@@ -1,138 +1,106 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import {
-  FiHome,
-  FiUser,
-  FiBook,
-  FiDollarSign,
-  FiMail,
-  FiHelpCircle,
-} from "react-icons/fi";
+import { useEffect, useState } from 'react';
+import { FiHome } from 'react-icons/fi';
+import classNames from 'classnames';
 
-export default function Header() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+const subjectLinks = [
+  'Arts & Humanities',
+  'Business Management',
+  'Social Sciences',
+  'Science & Technology',
+  'Engineering',
+  'Medical & Health Science',
+  'Education & Teaching',
+  'Agriculture Studies',
+  'Architectural Planning',
+  'Linguistics',
+];
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
+const Header = () => {
+  const [isSticky, setIsSticky] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsSticky(window.scrollY > 60);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
-    <header className="fixed top-0 w-full backdrop-blur-md shadow-sm z-10 bg-white">
-      <div className="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between">
-        {/* Logo */}
-        <div className="text-xl font-bold text-gray-800">NTEAP</div>
-
-        {/* Search Bar */}
-        <div className="hidden md:flex flex-grow mx-8">
-          <div className="relative w-full max-w-lg">
-            <input
-              type="text"
-              placeholder="What book are you looking for?"
-              className="w-full p-3 pl-4 rounded-lg bg-white border border-gray-300 focus:outline-none"
-            />
-            <button className="absolute right-0 top-0 h-full px-4 bg-green-600 text-white rounded-r-lg">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="2"
-                stroke="currentColor"
-                className="w-5 h-5"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M21 21l-4.35-4.35m0 0a7.5 7.5 0 10-10.6 0 7.5 7.5 0 0010.6 0z"
-                />
-              </svg>
-            </button>
+    <header className="w-full">
+      {/* Green Bar with Search */}
+      <div
+        className={classNames(
+          'w-full bg-green-600 transition-all duration-300 overflow-hidden',
+          {
+            'h-0 opacity-0': isSticky,
+            'h-16 md:h-20 opacity-100': !isSticky,
+          }
+        )}
+      >
+        <div className="max-w-7xl mx-auto flex items-center justify-between h-full px-4">
+          <input
+            type="text"
+            placeholder="What book are you looking for?"
+            className="w-2/3 md:w-1/2 px-4 py-2 rounded-md bg-green-500 placeholder-white text-white focus:outline-none"
+          />
+          <div className="text-white text-sm space-x-2 hidden md:block">
+            <a href="#" className="hover:underline">Create an account</a>
+            <span>|</span>
+            <a href="#" className="hover:underline">Log in</a>
           </div>
-        </div>
-
-        {/* Sign-up / Sign-in Buttons */}
-        <div className="hidden md:flex space-x-4">
-          <button className="px-4 py-2 bg-green-600 text-white rounded-lg">
-            Sign up
-          </button>
-          <button className="px-4 py-2 border border-green-600 text-green-600 rounded-lg">
-            Sign in
-          </button>
-        </div>
-
-        {/* Hamburger Icon - Visible on All Screens */}
-        <div className="flex items-center">
-          <button onClick={toggleMenu} className="ml-4 bg-transparent">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              stroke="currentColor"
-              className="w-6 h-6 text-gray-800"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M3.75 5.25h16.5m-16.5 6.75h16.5m-16.5 6.75h16.5"
-              />
-            </svg>
-          </button>
         </div>
       </div>
 
-      {/* Sliding Menu */}
-<div
-  className={`fixed top-0 right-0 bottom-0 h-full w-4/5 md:w-1/5 bg-green-600 text-white transform ${
-    isMenuOpen ? "translate-x-0" : "translate-x-full"
-  } transition-transform duration-300 z-20 flex flex-col`}
->
-  {/* Close Button */}
-  <button onClick={toggleMenu} className="absolute top-4 right-4">
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      strokeWidth="2"
-      stroke="currentColor"
-      className="w-6 h-6"
-    >
-      <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-    </svg>
-  </button>
+      {/* Sticky White Nav */}
+      <div
+        className={classNames(
+          'w-full bg-white z-50 sticky top-0 transition-all duration-300 shadow h-24 pt-8',
+          {
+            'shadow-md': isSticky,
+          }
+        )}
+      >
+        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between relative">
+          <div className="text-green-600 font-bold text-xl">NTEAP</div>
+          <nav className="flex space-x-6 text-sm font-semibold text-gray-800 relative">
+            {/* Subjects Dropdown */}
+            <div
+              className="relative"
+              onMouseEnter={() => setShowDropdown(true)}
+              onMouseLeave={() => setShowDropdown(false)}
+            >
+              <button className="flex items-center space-x-1">
+                <FiHome className="text-lg" />
+                <span>Subjects ▾</span>
+              </button>
+              {showDropdown && (
+                <div className="absolute top-full left-0 mt-2 w-64 bg-white shadow-lg rounded-md py-2 z-50">
+                  {subjectLinks.map((subject, idx) => (
+                    <a
+                      key={idx}
+                      href="#"
+                      className="block px-4 py-2 hover:bg-gray-100 text-sm text-gray-800"
+                    >
+                      {subject}
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
 
-  {/* Navigation Links */}
-  <nav className="space-y-6 mt-20 px-6 flex-grow bg-green-600">
-    <a href="#" className="flex items-center space-x-2">
-      <FiHome className="w-5 h-5" /> <span>Home</span>
-    </a>
-    <a href="#" className="flex items-center space-x-2">
-      <FiUser className="w-5 h-5" /> <span>About Us</span>
-    </a>
-    <a href="#" className="flex items-center space-x-2">
-      <FiBook className="w-5 h-5" /> <span>Browse Books</span>
-    </a>
-    <a href="#" className="flex items-center space-x-2">
-      <FiDollarSign className="w-5 h-5" /> <span>Pricing</span>
-    </a>
-    <a href="#" className="flex items-center space-x-2">
-      <FiMail className="w-5 h-5" /> <span>Contact Us</span>
-    </a>
-    <a href="#" className="flex items-center space-x-2">
-      <FiHelpCircle className="w-5 h-5" /> <span>FAQs</span>
-    </a>
-  </nav>
-
-  {/* Action Buttons */}
-  <div className="px-6 py-6 bg-green-600">
-    <button className="w-full px-4 py-2 bg-white text-green-600 rounded-lg">
-      Sign up
-    </button>
-    <button className="w-full px-4 py-2 mt-2 border border-white text-white rounded-lg">
-      Sign in
-    </button>
-  </div>
-</div>
+            <a href="#" className="text-green-600">Browse Books</a>
+            <a href="#">Get Published</a>
+            <a href="#">Plans</a>
+            <a href="#">Support</a>
+          </nav>
+        </div>
+      </div>
     </header>
   );
-}
+};
+
+export default Header;
